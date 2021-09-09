@@ -1,0 +1,27 @@
+.answer_list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    list-style-type: none;
+    gap: 12px 6px;
+    padding-inline-start: 0;
+    max-width: 360px;
+    .answer_item {
+        transition: background 0.3s ease-in-out;
+        display: flex;
+        justify-content: center;
+        margin: auto;
+        background: green;
+        padding: 1rem;
+        border-radius: 5px;
+        color: white;
+        min-width: 25px;
+    }
+
+    &__disabled {
+        .answer_item {
+            background: gray;
+            color: white;
+        }
+    }
+}
