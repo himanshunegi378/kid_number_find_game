@@ -1,63 +1,23 @@
 import { QuestionModel } from "../../models/question.model";
 //@ts-ignore
 import { useSpeechSynthesis } from 'react-speech-kit';
-//@ts-ignore
-import converter from "number-to-words";
 import { useCallback, useEffect, useState } from "react";
 import styles from './question.module.scss';
 import { AnswerList } from "./components/AnswerList/AnswerList.component";
+import { generateQuestion } from "../../services/generateQuestion";
 
-
-const reshuffleAnswers = (question: QuestionModel) => {
-    const answers = question.answers.slice();
-    const shuffledAnswers = [];
-    while (answers.length > 0) {
-        const index = Math.floor(Math.random() * answers.length);
-        shuffledAnswers.push(answers[index]);
-        answers.splice(index, 1);
-    }
-    return shuffledAnswers;
-}
-
-const generateQuestion = (): QuestionModel => {
-    const question: QuestionModel = {
-        question: "",
-        answers: []
-    }
-
-    const number = Math.floor(Math.random() * 100) + 1;
-    question.question = converter.toWords(number).toUpperCase();
-
-    for (let i = 0; i < 3; i++) {
-        const answer = Math.floor(Math.random() * 100) + 1;
-        if (number !== answer) {
-            question.answers.push({
-                answer: answer.toString(),
-                correct: false
-            })
-        }
-    }
-    question.answers.push({
-        answer: number.toString(),
-        correct: true
-    })
-
-    question.answers = reshuffleAnswers(question);
-
-    return question;
-}
-
-
-
+type RecordType = { right: number, wrong: number }
 
 export function QuestionView() {
     const [{ question, answers }, setQuestion] = useState<QuestionModel>(generateQuestion());
+    const [record, setRecord] = useState<RecordType>({ right: 0, wrong: 0 });
     const [isDisabled, setIsDisabled] = useState(false);
     const { speak, cancel, speaking, supported } = useSpeechSynthesis();
     useEffect(() => {
         setQuestion(generateQuestion());
     }, [])
 
+    // make new question and enable selection button
     const handleNewQuestion = () => {
         setQuestion(generateQuestion());
         setIsDisabled(false);
@@ -78,12 +38,16 @@ export function QuestionView() {
         setIsDisabled(true);
         if (answer.correct) {
             handleSpeak(`Correct!`);
+            setRecord(prevRecord => ({ ...prevRecord, right: prevRecord.right + 1 }));
         } else {
             handleSpeak(`Wrong!`);
+            setRecord(prevRecord => ({ ...prevRecord, wrong: prevRecord.wrong + 1 }));
         }
         setTimeout(handleNewQuestion, 1000);
     }, [answers, handleSpeak])
+
     return <div className={styles.question_container}>
+
         <h1 onClick={() => {
             handleSpeak(question);
         }}>
