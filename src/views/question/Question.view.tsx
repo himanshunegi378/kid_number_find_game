@@ -5,6 +5,7 @@ import styles from './question.module.scss';
 import { AnswerList } from "./components/AnswerList/AnswerList.component";
 import { useSpeech } from "../../context/Speech";
 import { Score } from "./components/Score/Score.component";
+import { useHistory } from "react-router-dom";
 
 
 export function QuestionView({ quizObject: obj }: { quizObject: any }) {
@@ -13,11 +14,14 @@ export function QuestionView({ quizObject: obj }: { quizObject: any }) {
     const [score, setScore] = useState(0);
     const [isDisabled, setIsDisabled] = useState(false);
     const speak = useSpeech();
-
+    const history = useHistory();
     useEffect(() => {
-        if(!obj) return;
+        if (!obj) {
+            history.push('/')
+            return;
+        }
         setQuizObject(new obj());
-    }, [obj])
+    }, [history, obj])
 
 
     useEffect(() => {
