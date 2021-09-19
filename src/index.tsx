@@ -4,12 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { SpeechProvider } from './context/Speech';
+import {
+  BrowserRouter as Router,
 
+} from "react-router-dom";
 ReactDOM.render(
   <React.StrictMode>
-    <SpeechProvider>
-      <App />
-    </SpeechProvider>
+    <Router>
+      <SpeechProvider>
+        <App />
+      </SpeechProvider>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );

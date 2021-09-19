@@ -15,6 +15,7 @@ export function QuestionView({ quizObject: obj }: { quizObject: any }) {
     const speak = useSpeech();
 
     useEffect(() => {
+        if(!obj) return;
         setQuizObject(new obj());
     }, [obj])
 
