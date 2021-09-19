@@ -1,6 +1,7 @@
 export type QuestionModel = {
     question: string,
-    answers : {
+    answers: {
+        id: string
         answer: string,
         correct: boolean
     }[]

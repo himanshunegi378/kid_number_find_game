@@ -3,50 +3,68 @@ import { QuestionModel } from "../../models/question.model";
 import { useCallback, useEffect, useState } from "react";
 import styles from './question.module.scss';
 import { AnswerList } from "./components/AnswerList/AnswerList.component";
-import { generateQuestion } from "../../services/generateQuestion";
 import { useSpeech } from "../../context/Speech";
 import { Score } from "./components/Score/Score.component";
 
-type RecordType = { right: number, wrong: number }
 
-export function QuestionView() {
-    const [{ question, answers }, setQuestion] = useState<QuestionModel>(generateQuestion());
-    const [record, setRecord] = useState<RecordType>({ right: 0, wrong: 0 });
+export function QuestionView({ quizObject: obj }: { quizObject: any }) {
+    const [{ question, answers }, setQuestion] = useState<QuestionModel>({ question: 'na', answers: [] });
+    const [quizObject, setQuizObject] = useState<any>();
+    const [score, setScore] = useState(0);
     const [isDisabled, setIsDisabled] = useState(false);
     const speak = useSpeech();
+
     useEffect(() => {
-        setQuestion(generateQuestion());
-    }, [])
+        setQuizObject(new obj());
+    }, [obj])
 
-    // make new question and enable selection button
-    const handleNewQuestion = () => {
-        setQuestion(generateQuestion());
-        setIsDisabled(false);
-    }
 
-    const handleAnswerClick = useCallback((answerId: number) => {
-        const answer = answers[answerId];
+    useEffect(() => {
+        if (!quizObject) return;
+        const onNewQuestion = (newQuestion: QuestionModel) => {
+            setQuestion(newQuestion);
+            setIsDisabled(false);
+        }
+
+        const onScoreChange = (score: number) => {
+            setScore(score);
+        }
+
+        quizObject.on('question', onNewQuestion)
+        quizObject.on('score', onScoreChange)
+        quizObject.generateQuestion();
+        return () => {
+            quizObject.removeListener('question', onNewQuestion)
+            quizObject.removeListener('score', onScoreChange)
+        }
+
+    }, [quizObject]);
+
+    const handleAnswerClick = useCallback((answerId: string) => {
+        const isCorrect: boolean = quizObject.submitAnswer(answerId);
         setIsDisabled(true);
-        if (answer.correct) {
+        if (isCorrect) {
             speak({ text: `Correct!` });
-            setRecord(prevRecord => ({ ...prevRecord, right: prevRecord.right + 1 }));
         } else {
             speak({ text: `Wrong!` });
-            setRecord(prevRecord => ({ ...prevRecord, wrong: prevRecord.wrong + 1 }));
         }
-        setTimeout(handleNewQuestion, 1000);
-    }, [answers, speak])
+        setTimeout(() => {
+            quizObject.generateQuestion();
+        }, 1000);
+    }, [quizObject, speak])
 
     return <div className={styles.question_container}>
 
-        <Score score={record.right - record.wrong} />
+        <Score score={score} onClick={(score: string) => {
+            speak({ text: score });
+        }} />
 
         <h1 onClick={() => {
             speak({ text: question });
         }}>
             {question}
         </h1>
-        <AnswerList disabled={isDisabled} answers={answers.map(({ answer }) => answer)} onAnswerClick={handleAnswerClick} />
+        <AnswerList disabled={isDisabled} answers={answers.map(({ correct, ...answer }) => answer)} onAnswerClick={handleAnswerClick} />
 
     </div>;
 }

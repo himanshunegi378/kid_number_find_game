@@ -1,13 +1,12 @@
-import { useSpeech } from "../../../../context/Speech"
-
-export function Score({ score }: { score: number }) {
-    const speak = useSpeech()
+export function Score({ score, onClick = () => { } }: { score: number, onClick?: (text: string) => void }) {
     return <div style={{
         "fontSize": `xx-large`,
         "fontWeight": 500
-    }}>
-        Score : <i onClick={() => {
-            speak({ text: score.toString() })
-        }} >{score}</i>
+    }}
+        onClick={() => {
+            onClick(score.toString());
+        }}
+    >
+        Score : <i>{score}</i>
     </div>
 }
