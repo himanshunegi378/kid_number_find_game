@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 ReactDOM.render(
   <React.StrictMode>
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <SpeechProvider>
         <App />
       </SpeechProvider>
