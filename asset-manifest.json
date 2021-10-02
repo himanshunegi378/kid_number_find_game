@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/kid_number_find_game/static/css/main.b94d21f8.chunk.css",
-    "main.js": "/kid_number_find_game/static/js/main.87246754.chunk.js",
-    "main.js.map": "/kid_number_find_game/static/js/main.87246754.chunk.js.map",
-    "runtime-main.js": "/kid_number_find_game/static/js/runtime-main.c37a7a12.js",
-    "runtime-main.js.map": "/kid_number_find_game/static/js/runtime-main.c37a7a12.js.map",
-    "static/js/2.686987b4.chunk.js": "/kid_number_find_game/static/js/2.686987b4.chunk.js",
-    "static/js/2.686987b4.chunk.js.map": "/kid_number_find_game/static/js/2.686987b4.chunk.js.map",
-    "static/js/3.66157750.chunk.js": "/kid_number_find_game/static/js/3.66157750.chunk.js",
-    "static/js/3.66157750.chunk.js.map": "/kid_number_find_game/static/js/3.66157750.chunk.js.map",
+    "main.js": "/kid_number_find_game/static/js/main.b4118bf7.chunk.js",
+    "main.js.map": "/kid_number_find_game/static/js/main.b4118bf7.chunk.js.map",
+    "runtime-main.js": "/kid_number_find_game/static/js/runtime-main.31fd3ef6.js",
+    "runtime-main.js.map": "/kid_number_find_game/static/js/runtime-main.31fd3ef6.js.map",
+    "static/js/2.16316cc7.chunk.js": "/kid_number_find_game/static/js/2.16316cc7.chunk.js",
+    "static/js/2.16316cc7.chunk.js.map": "/kid_number_find_game/static/js/2.16316cc7.chunk.js.map",
+    "static/js/3.3392d8e7.chunk.js": "/kid_number_find_game/static/js/3.3392d8e7.chunk.js",
+    "static/js/3.3392d8e7.chunk.js.map": "/kid_number_find_game/static/js/3.3392d8e7.chunk.js.map",
     "index.html": "/kid_number_find_game/index.html",
     "static/css/main.b94d21f8.chunk.css.map": "/kid_number_find_game/static/css/main.b94d21f8.chunk.css.map",
-    "static/js/2.686987b4.chunk.js.LICENSE.txt": "/kid_number_find_game/static/js/2.686987b4.chunk.js.LICENSE.txt"
+    "static/js/2.16316cc7.chunk.js.LICENSE.txt": "/kid_number_find_game/static/js/2.16316cc7.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.c37a7a12.js",
-    "static/js/2.686987b4.chunk.js",
+    "static/js/runtime-main.31fd3ef6.js",
+    "static/js/2.16316cc7.chunk.js",
     "static/css/main.b94d21f8.chunk.css",
-    "static/js/main.87246754.chunk.js"
+    "static/js/main.b4118bf7.chunk.js"
   ]
 }
