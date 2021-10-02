@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 
 
 export function QuestionView({ quizObject: obj }: { quizObject: any }) {
-    const [{ question, answers }, setQuestion] = useState<QuestionModel>({ question: 'na', answers: [] });
+    const [{ question, answers }, setQuestion] = useState<QuestionModel>({ question:{ text: 'na', speech: 'na'}, answers: [] });
     const [quizObject, setQuizObject] = useState<any>();
     const [score, setScore] = useState(0);
     const [isDisabled, setIsDisabled] = useState(false);
@@ -65,9 +65,9 @@ export function QuestionView({ quizObject: obj }: { quizObject: any }) {
         }} />
 
         <h1 onClick={() => {
-            speak({ text: question });
+            speak({ text: question.speech });
         }}>
-            {question}
+            {question.text}
         </h1>
         <AnswerList disabled={isDisabled} answers={answers.map(({ correct, ...answer }) => answer)} onAnswerClick={handleAnswerClick} />
 

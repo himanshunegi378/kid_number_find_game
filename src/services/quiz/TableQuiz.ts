@@ -1,20 +1,18 @@
-import { QuestionModel } from "../../models/question.model";
-//@ts-ignore
-import converter from "number-to-words";
 import { EventEmitter } from 'events';
-import { IQuiz } from "./IQuiz";
+import { QuestionModel } from '../../models/question.model';
+import { IQuiz } from './IQuiz';
 
-export class NumberQuiz extends EventEmitter implements IQuiz {
+export class TableQuiz extends EventEmitter implements IQuiz {
     question: QuestionModel | undefined;
     score: number
-
+    table: { count: number, position: number };
     constructor() {
         super();
-        this.question = undefined
-        this.score = 0
+        this.question = undefined;
+        this.table = { count: 2, position: 1 };
+        this.score = 0;
     }
-
-    generateQuestion = () => {
+    generateQuestion(): void {
         const question: QuestionModel = {
             question: {
                 text: '',
@@ -22,30 +20,24 @@ export class NumberQuiz extends EventEmitter implements IQuiz {
             },
             answers: []
         }
-
-        const number = Math.floor(Math.random() * 100) + 1;
-        question.question = converter.toWords(number).toUpperCase();
-        // generate possible wrong answers
-        for (let i = 0; i < 3; i++) {
-            const answer = Math.floor(Math.random() * 100) + 1;
-            if (number !== answer) {
-                question.answers.push({
-                    id: answer.toString(),
-                    answer: answer.toString(),
-                    correct: false
-                })
-            }
+        question.question = {
+            text: `${this.table.count} X ${this.table.position}`,
+            speech: `${this.table.count} ${this.table.position} j`
         }
-        // generate correct answer
-        question.answers.push({
-            id: number.toString(),
-            answer: number.toString(),
-            correct: true
-        })
-
+        let i = this.table.position - 1;
+        while (question.answers.length <= 3) {
+            const product = this.table.count * i;
+            question.answers.push({
+                id: `${product}`,
+                answer: `${product}`,
+                correct: product === this.table.count * this.table.position
+            });
+            i++;
+        }
         question.answers = this.reshuffleAnswers(question);
         this.question = question;
-        this.emit("question", question);
+        this.emit('question', question);
+
     }
 
     private reshuffleAnswers = (question: QuestionModel) => {
@@ -59,17 +51,23 @@ export class NumberQuiz extends EventEmitter implements IQuiz {
         return shuffledAnswers;
     }
 
-    submitAnswer = (answerId: string) => {
+    submitAnswer(answerId: string): boolean {
         if (!this.question) return false;
         const answer = this.question.answers.find(answer => answerId === answer.id);
         if (answer?.correct) {
             this.updateScore(1);
+            if (this.table.position === 9) {
+                this.table.count++;
+                this.table.position = 1;
+            } else {
+                this.table.position++;
+            }
+
             return true;
         }
         this.updateScore(-1);
         return false;
     }
-
     private updateScore = (deltaChangeInScore: number) => {
         this.score += deltaChangeInScore;
         this.emit("score", this.score);

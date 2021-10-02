@@ -1,5 +1,8 @@
 export type QuestionModel = {
-    question: string,
+    question: {
+        text: string,
+        speech: string
+    },
     answers: {
         id: string
         answer: string,
