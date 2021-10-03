@@ -4,12 +4,12 @@ import converter from "number-to-words";
 import { EventEmitter } from 'events';
 import { IQuiz } from "./IQuiz";
 
-export class NumberQuiz extends EventEmitter implements IQuiz {
+export class NumberQuiz implements IQuiz {
     question: QuestionModel | undefined;
     score: number
+    public quizEventEmitter = new EventEmitter();
 
     constructor() {
-        super();
         this.question = undefined
         this.score = 0
     }
@@ -45,7 +45,7 @@ export class NumberQuiz extends EventEmitter implements IQuiz {
 
         question.answers = this.reshuffleAnswers(question);
         this.question = question;
-        this.emit("question", question);
+        this.quizEventEmitter.emit("question", question);
     }
 
     private reshuffleAnswers = (question: QuestionModel) => {
@@ -72,6 +72,6 @@ export class NumberQuiz extends EventEmitter implements IQuiz {
 
     private updateScore = (deltaChangeInScore: number) => {
         this.score += deltaChangeInScore;
-        this.emit("score", this.score);
+        this.quizEventEmitter.emit("score", this.score);
     }
 }

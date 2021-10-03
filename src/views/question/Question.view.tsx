@@ -35,12 +35,12 @@ export function QuestionView({ quizObject: obj }: { quizObject: any }) {
             setScore(score);
         }
 
-        quizObject.on('question', onNewQuestion)
-        quizObject.on('score', onScoreChange)
+        quizObject.quizEventEmitter.on('question', onNewQuestion)
+        quizObject.quizEventEmitter.on('score', onScoreChange)
         quizObject.generateQuestion();
         return () => {
-            quizObject.removeListener('question', onNewQuestion)
-            quizObject.removeListener('score', onScoreChange)
+            quizObject.quizEventEmitter.off('question', onNewQuestion)
+            quizObject.quizEventEmitter.off('score', onScoreChange)
         }
 
     }, [quizObject]);

@@ -2,12 +2,12 @@ import { EventEmitter } from 'events';
 import { QuestionModel } from '../../models/question.model';
 import { IQuiz } from './IQuiz';
 
-export class TableQuiz extends EventEmitter implements IQuiz {
+export class TableQuiz implements IQuiz {
     question: QuestionModel | undefined;
     score: number
     table: { count: number, position: number };
+    public quizEventEmitter = new EventEmitter();
     constructor() {
-        super();
         this.question = undefined;
         this.table = { count: 2, position: 1 };
         this.score = 0;
@@ -36,7 +36,7 @@ export class TableQuiz extends EventEmitter implements IQuiz {
         }
         question.answers = this.reshuffleAnswers(question);
         this.question = question;
-        this.emit('question', question);
+        this.quizEventEmitter.emit('question', question);
 
     }
 
@@ -70,6 +70,6 @@ export class TableQuiz extends EventEmitter implements IQuiz {
     }
     private updateScore = (deltaChangeInScore: number) => {
         this.score += deltaChangeInScore;
-        this.emit("score", this.score);
+        this.quizEventEmitter.emit("score", this.score);
     }
 }
